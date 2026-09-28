@@ -1,0 +1,16 @@
+# Frontend
+node_modules/
+dist/
+
+# Backend Python virtual environment
+pms_env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# VS Code
+.vscode/
