@@ -1,0 +1,54 @@
+:root {
+  /* Main brand colors */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-light: #eff6ff;
+
+  /* Background colors */
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+
+  /* Text colors */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  /* Input colors */
+  --color-input-background: #ffffff;
+  --color-input-border: #cbd5e1;
+  --color-input-focus: #2563eb;
+
+  /* Disabled controls */
+  --color-disabled-background: #cbd5e1;
+  --color-disabled-text: #64748b;
+
+  /* Status colors */
+  --color-success: #15803d;
+  --color-success-background: #f0fdf4;
+
+  --color-error: #dc2626;
+  --color-error-background: #fef2f2;
+
+  --color-warning: #d97706;
+  --color-warning-background: #fffbeb;
+
+  /* Layout */
+  --header-height: 72px;
+  --sidebar-width: 240px;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+}

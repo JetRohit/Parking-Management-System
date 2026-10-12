@@ -1,0 +1,134 @@
+.auth-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: var(--spacing-lg);
+  background-color: var(--color-background);
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-heading {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.auth-heading h1 {
+  margin: 0 0 var(--spacing-sm);
+
+  color: var(--color-primary);
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.auth-heading p {
+  margin: 0;
+
+  color: var(--color-text-secondary);
+  font-size: 15px;
+}
+
+.auth-form {
+  width: 100%;
+
+  padding: 28px;
+
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-form h2 {
+  margin: 0 0 var(--spacing-lg);
+
+  color: var(--color-text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.auth-description {
+  margin: 0 0 var(--spacing-lg);
+
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.auth-link {
+  display: block;
+
+  margin: var(--spacing-md) auto 0;
+  padding: 4px;
+
+  border: none;
+  background: transparent;
+
+  color: var(--color-primary);
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.auth-link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+.auth-account-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  margin-top: var(--spacing-md);
+
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.auth-account-prompt .auth-link {
+  display: inline;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 14px;
+}
+
+.form-error {
+  margin-top: var(--spacing-sm);
+
+  color: var(--color-danger);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: var(--spacing-md);
+  }
+
+  .auth-form {
+    padding: var(--spacing-lg);
+  }
+
+  .auth-heading h1 {
+    font-size: 32px;
+  }
+
+  .auth-account-prompt {
+    flex-wrap: wrap;
+  }
+}
