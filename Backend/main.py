@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import jwt
+
 from fastapi import FastAPI, HTTPException, Response, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pwdlib import PasswordHash
 
@@ -12,18 +16,31 @@ from auth import (
     get_authenticated_user,
     require_admin,
 )
+
 from database import get_database_connection
+
 from routes.parking import router as parking_router
 from routes.slot_management import router as slot_management_router
 from routes.bookings import router as bookings_router
 
 
+# ========================================
+# FASTAPI APPLICATION
+# ========================================
+
 app = FastAPI()
 
 
+# ========================================
+# CORS CONFIGURATION
+# ========================================
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,6 +55,10 @@ app.include_router(parking_router)
 app.include_router(slot_management_router)
 app.include_router(bookings_router)
 
+
+# ========================================
+# PASSWORD HASHING
+# ========================================
 
 password_hash = PasswordHash.recommended()
 
@@ -59,17 +80,6 @@ class EmployeeCreate(BaseModel):
 class UserRegister(BaseModel):
     username: str
     password: str
-
-
-# ========================================
-# HOME
-# ========================================
-
-@app.get("/")
-def home():
-    return {
-        "message": "Parking Management System API is running"
-    }
 
 
 # ========================================
@@ -194,7 +204,7 @@ def login(data: LoginRequest, response: Response):
         value=token,
         httponly=True,
         samesite="lax",
-        secure=False,
+        secure=True if __import__("os").getenv("RENDER") else False,
         max_age=1800
     )
 
@@ -304,3 +314,80 @@ def create_employee(
         "username": data.username,
         "role": "employee"
     }
+
+
+# ========================================
+# REACT FRONTEND CONFIGURATION
+# ========================================
+
+FRONTEND_DIST = (
+    Path(__file__).resolve().parent.parent
+    / "Frontend"
+    / "dist"
+)
+
+
+# ========================================
+# SERVE REACT STATIC FILES
+# ========================================
+
+if FRONTEND_DIST.is_dir():
+
+    ASSETS_DIR = FRONTEND_DIST / "assets"
+
+    if ASSETS_DIR.is_dir():
+        app.mount(
+            "/assets",
+            StaticFiles(directory=ASSETS_DIR),
+            name="assets"
+        )
+
+    # ========================================
+    # REACT HOME PAGE
+    # ========================================
+
+    @app.get("/", include_in_schema=False)
+    def serve_frontend():
+
+        return FileResponse(
+            FRONTEND_DIST / "index.html"
+        )
+
+
+    # ========================================
+    # REACT CLIENT-SIDE ROUTING
+    # ========================================
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def serve_react_routes(full_path: str):
+
+        requested_file = (
+            FRONTEND_DIST / full_path
+        ).resolve()
+
+        if (
+            requested_file.is_relative_to(
+                FRONTEND_DIST.resolve()
+            )
+            and requested_file.is_file()
+        ):
+            return FileResponse(requested_file)
+
+        return FileResponse(
+            FRONTEND_DIST / "index.html"
+        )
+
+
+# ========================================
+# FALLBACK WHEN FRONTEND IS NOT BUILT
+# ========================================
+
+else:
+
+    @app.get("/")
+    def home():
+
+        return {
+            "message": "Parking Management System API is running",
+            "frontend": "React build not found"
+        }
